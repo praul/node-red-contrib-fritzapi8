@@ -1,0 +1,213 @@
+
+
+<script type="text/javascript">
+    RED.nodes.registerType('fritz-api', {
+        category: 'config',
+        defaults: {
+            name: {value: "", required: false},
+            host: {value: "fritz.box", required: true},
+            strictSSL: {value: true}
+        },
+        credentials: {
+            username: {type: "text"},
+            password: {type: "password"}
+        },
+        label: function() {
+            return this.name || this.host;
+        }
+    });
+
+    RED.nodes.registerType('fritz-thermostat', {
+        category: 'Fritz!Box',
+        defaults: {
+            connection: {type: "fritz-api", required: true},
+            name: {value: "", required: false},
+            action: {value: "getTemperature"}
+        },
+        color: "#2E90DD",
+        inputs: 1,
+        outputs: 1,
+        icon: "icons/thermostat.png",
+        label: function() {
+            return this.name || "thermostat";
+        },
+        paletteLabel: "thermostat"
+    });
+
+    RED.nodes.registerType('fritz-outlet', {
+        category: 'Fritz!Box',
+        defaults: {
+            connection: {type: "fritz-api", required: true},
+            name: {value: "", required: false},
+            action: {value: "setSwitchState"}
+        },
+        color: "#2E90DD",
+        inputs: 1,
+        outputs: 1,
+        icon: "icons/power.png",
+        label: function() {
+            return this.name || "outlet";
+        },
+        paletteLabel: "outlet"
+    });
+
+    RED.nodes.registerType('fritz-bulb', {
+        category: 'Fritz!Box',
+        defaults: {
+            connection: {type: "fritz-api", required: true},
+            name: {value: "", required: false},
+            action: {value: "setSimpleOnOff"}
+        },
+        color: "#2E90DD",
+        inputs: 1,
+        outputs: 1,
+        icon: "icons/power.png",
+        label: function() {
+            return this.name || "bulb";
+        },
+        paletteLabel: "bulb"
+    });
+
+    RED.nodes.registerType('fritz-blind', {
+        category: 'Fritz!Box',
+        defaults: {
+            connection: {type: "fritz-api", required: true},
+            name: {value: "", required: false},
+            action: {value: "setBlind"}
+        },
+        color: "#2E90DD",
+        inputs: 1,
+        outputs: 1,
+        icon: "icons/blind.png",
+        label: function() {
+            return this.name || "blind";
+        },
+        paletteLabel: "blind"
+    });
+</script>
+
+<script type="text/html" data-template-name="fritz-api">
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-config-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-host"><i class="fa fa-globe"></i> Host</label>
+        <input type="text" id="node-config-input-host" placeholder="fritz.box">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-username"><i class="fa fa-user"></i> Username</label>
+        <input type="text" id="node-config-input-username">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-password"><i class="fa fa-lock"></i> Password</label>
+        <input type="password" id="node-config-input-password">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-strictSSL"><i class="fa fa-lock"></i> Strict SSL</label>
+        <input type="checkbox" id="node-config-input-strictSSL" style="display: inline-block; width: auto; vertical-align: top;">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="fritz-api">
+    <p>FRITZ!Box connection configuration for home automation</p>
+    <h3>Details</h3>
+    <p>Configure connection to your FRITZ!Box:</p>
+    <ul>
+        <li><code>Host</code>: Hostname or IP address of your FRITZ!Box</li>
+        <li><code>Username</code>: Optional username (if configured)</li>
+        <li><code>Password</code>: FRITZ!Box password</li>
+        <li><code>Strict SSL</code>: Enable/disable strict SSL checking</li>
+    </ul>
+    <p><b>Note:</b> The credentials must have Smart Home permissions enabled.</p>
+</script>
+
+<script type="text/html" data-template-name="fritz-thermostat">
+    <div class="form-row">
+        <label for="node-input-connection"><i class="fa fa-globe"></i> FRITZ!Box</label>
+        <input type="text" id="node-input-connection">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-action"><i class="fa fa-wrench"></i> Action</label>
+        <select id="node-input-action">
+            <option value="getTemperature">Get Temperature</option>
+            <option value="getTempTarget">Get Target Temperature</option>
+            <option value="setTempTarget">Set Target Temperature</option>
+            <option value="getTempComfort">Get Comfort Temperature</option>
+            <option value="setTempComfort">Set Comfort Temperature</option>
+            <option value="getTempNight">Get Night Temperature</option>
+            <option value="setTempNight">Set Night Temperature</option>
+            <option value="getBatteryCharge">Get Battery Level</option>
+            <option value="getWindowOpen">Get Window State</option>
+            <option value="setHkrWindowOpen">Set Window State</option>
+            <option value="setHkrBoost">Set Boost Mode</option>
+        </select>
+    </div>
+</script>
+
+<script type="text/html" data-template-name="fritz-outlet">
+    <div class="form-row">
+        <label for="node-input-connection"><i class="fa fa-globe"></i> FRITZ!Box</label>
+        <input type="text" id="node-input-connection">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-action"><i class="fa fa-wrench"></i> Action</label>
+        <select id="node-input-action">
+            <option value="setSwitchState">Set Switch State</option>
+            <option value="setSwitchToggle">Toggle Switch</option>
+            <option value="getSwitchState">Get Switch State</option>
+            <option value="getSwitchPower">Get Power Usage</option>
+            <option value="getSwitchEnergy">Get Energy Usage</option>
+            <option value="getSwitchPresence">Get Presence</option>
+            <option value="getTemperature">Get Temperature</option>
+        </select>
+    </div>
+</script>
+
+<script type="text/html" data-template-name="fritz-bulb">
+    <div class="form-row">
+        <label for="node-input-connection"><i class="fa fa-globe"></i> FRITZ!Box</label>
+        <input type="text" id="node-input-connection">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-action"><i class="fa fa-wrench"></i> Action</label>
+        <select id="node-input-action">
+            <option value="setSimpleOnOff">Set On/Off</option>
+            <option value="setLevel">Set Level (0-255)</option>
+            <option value="setLevelPercentage">Set Level (0-100%)</option>
+            <option value="setColor">Set Color (HSV)</option>
+            <option value="setColorTemperature">Set Color Temperature</option>
+        </select>
+    </div>
+</script>
+
+<script type="text/html" data-template-name="fritz-blind">
+    <div class="form-row">
+        <label for="node-input-connection"><i class="fa fa-globe"></i> FRITZ!Box</label>
+        <input type="text" id="node-input-connection">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-action"><i class="fa fa-wrench"></i> Action</label>
+        <select id="node-input-action">
+            <option value="setBlind">Set Blind (open/close/stop)</option>
+            <option value="setLevel">Set Level (0-255)</option>
+            <option value="setLevelPercentage">Set Level (0-100%)</option>
+        </select>
+    </div>
+</script>
