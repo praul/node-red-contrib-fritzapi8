@@ -2,6 +2,8 @@
 
 This fork fixes functionality with Fritz AHA-HTTP Api in Version 8.
 
+I let Cline run widly over the original package and just provided it the pdf with the api changes. Took some fixing and adjusting, but this is working now on my end
+
 Forked from dnknth
 
 Control your smart home DECT devices through an AVM Fritz!Box with node-RED.
