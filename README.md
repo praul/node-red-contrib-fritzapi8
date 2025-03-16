@@ -13,8 +13,7 @@ These nodes are a simple Node-RED wrapper for [andig's](https://github.com/andig
 
 ## Installation
 
-1. Clone the repo.
-2. npm install ./node-red-contrib-fritzapi
+Download tgz from /dist and upload in node-red
 
 ## Configuration
 
