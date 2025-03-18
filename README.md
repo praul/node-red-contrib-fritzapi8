@@ -1,5 +1,9 @@
 # node-red-contrib-fritzapi
 
+**NOTICE** It seems, that this is not needed. Simply delete the unknown device in fritzbox that gets introduced at 8 update. See: https://discourse.nodered.org/t/node-red-contrib-fritzapi/95949/7
+
+-----
+
 This fork fixes functionality with Fritz AHA-HTTP Api in Version 8.
 
 I let Cline run widly over the original package and just provided it the pdf with the api changes. Took some fixing and adjusting, but this is working now on my end
